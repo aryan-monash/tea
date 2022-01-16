@@ -192,9 +192,18 @@ pre code {
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 </div>
-<div id="data-source" class="section level1">
-<h1>Data Source</h1>
+<div id="methodology" class="section level1">
+<h1>Methodology</h1>
+<div id="data-source" class="section level2">
+<h2>Data Source</h2>
 <p>The data for the analysis is sourced from Australian Bureau of Statistics and extracted and processed using various functions of the <code>readabs</code> library.</p>
+<p>To read and tidy up abs source files, <code>read_abs</code> function was used. The first argument of the function takes the catalogue number of the the document which was obtained from the <a href="https://www.abs.gov.au/AUSSTATS/abs@.nsf/ViewContent?readform&amp;view=ProductsbyCatalogue&amp;Action=Expand&amp;Num=7.2">ABS website</a>. The second argument takes the table number which can also be obtained by further exploring the website.</p>
+</div>
+<div id="caveats" class="section level2">
+<h2>Caveats</h2>
+<p>The analysis could’ve been expanded by analysing variables such as <em>previous experience</em>, <em>years of education</em>, <em>agegroup</em> and <em>wages</em> of the labour force. However, due to lack of these variables in the data filtered for the tech sector, this could not be achieved.</p>
+<p>An forecasting model such as ARIMA or ETS could’ve been fitted to predict changes in values. However, due to COVID-19, values for the last part of the timeline were spiked and would’ve affected model predictions.</p>
+</div>
 </div>
 <div id="analysis" class="section level1">
 <h1>Analysis</h1>

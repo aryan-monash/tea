@@ -22,9 +22,19 @@ library(readabs)
 library(tidyverse)
 ```
 
-# Data Source
+# Methodology
+
+## Data Source
 
 The data for the analysis is sourced from Australian Bureau of Statistics and extracted and processed using various functions of the `readabs` library.
+
+To read and tidy up abs source files, `read_abs` function was used. The first argument of the function takes the catalogue number of the the document which was obtained from the [ABS website](https://www.abs.gov.au/AUSSTATS/abs@.nsf/ViewContent?readform&view=ProductsbyCatalogue&Action=Expand&Num=7.2). The second argument takes the table number which can also be obtained by further exploring the website.
+
+## Caveats
+
+The analysis could've been expanded by analysing variables such as *previous experience*, *years of education*, *agegroup* and *wages* of the labour force. However, due to lack of these variables in the data filtered for the tech sector, this could not be achieved. 
+
+An forecasting model such as ARIMA or ETS could've been fitted to predict changes in values. However, due to COVID-19, values for the last part of the timeline were spiked and would've affected model predictions.
 
 
 # Analysis
