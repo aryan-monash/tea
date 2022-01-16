@@ -1,0 +1,99 @@
+---
+title: "TCA Task"
+author: "Aryan Jain"
+date: "17/01/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+> The report focuses on exploring gender equality in the workforce for the tech sector.
+
+**NOTE**
+
+The term gender and sex are used interchangeably throughout the report for the sake of simplicity.
+
+```{r}
+library(readabs)
+library(tidyverse)
+```
+
+# Data Source
+
+The data for the analysis is sourced from Australian Bureau of Statistics and extracted and processed using various functions of the `readabs` library.
+
+
+# Analysis
+
+## Part 1
+
+The first part of the analysis focuses on gender distribution in total employed labour force of Australia.
+
+```{r}
+lfs_emp_sex <- read_abs("6291.0.55.001", tables = 6, check_local = FALSE)
+lfs_emp_sex_sep <- lfs_emp_sex %>% separate_series()
+lfs_emp_sex_sep_tech <- lfs_emp_sex_sep %>% filter(series_1 == "Professional, Scientific and Technical Services")
+lfs_emp_final <- lfs_emp_sex_sep_tech %>% 
+    select(date, series_2, series_3, value) %>% 
+    rename("emp_type" = "series_2",
+           "sex" = "series_3") %>% 
+    filter(sex != "Persons")
+
+ggplot(lfs_emp_final, aes(x=date, y=value, color=sex, group=sex)) + 
+    geom_line() + 
+    facet_wrap(~emp_type) +
+    labs(x="",
+         y="Number of Employees [in thousands]")
+```
+
+The plot above shows the number of male and female employees employed in full-time and part-time (also total) roles over more than 3 decades. With X-axis denoting the number of years, Y-axis denoting number of employees and the faceted groups denoting employment type.
+
+The plot clearly shows that males are more strongly represented in full-time roles while women are observed to be dominating part-time employment. This could be present due to multiple reasons, 
+
+- The first being that women choose to take up more part-time roles as they might want to take up (or burdened with) more responsibilities in their personal lives. This could be an indication of gender inequality present in the cultural foundations of the poeple.
+- Or, it could also be due to the lack of equal opportunities for women in the tech sector.
+
+To explore the reasons behind this, further analysis is conducted on underemployment in the tech sector.
+
+*Note: The graph also shows that full-time roles are far greater in number than part-time roles which is why the findings of the third facet (Employed Total) are inline with that of Employed full-time facet.*
+
+## Part 2
+
+The second part of the analysis focuses on underemployment in the tech sector for both genders.
+
+```{r}
+lfs_unemp_sex <- read_abs("6291.0.55.001", tables = 19, check_local = FALSE)
+lfs_unemp_sex_sep <- lfs_unemp_sex %>% separate_series()
+lfs_unemp_sex_tech <- lfs_unemp_sex_sep %>% filter(series_1 == "Professional, Scientific and Technical Services")
+lfs_unemp_sex <- lfs_unemp_sex_tech %>% 
+    select(date, series_2, series_3, value) %>% 
+    rename("emp_type" = "series_2",
+           "sex" = "series_3") %>% 
+    filter(sex != "Persons")
+
+lfs_unemp_sex %>% 
+    ggplot(aes(x=date, y=value, color=sex)) + 
+    geom_line() + 
+    facet_wrap(~emp_type, scales="free") +
+    labs(x="",
+         y="")
+```
+
+The plot above shows the underemployment statistics of male and female employees over more than 3 decades. With X-axis denoting the number of years, Y-axis denoting values for various statistics. 
+
+**Plot Guide**
+- Employed total (in thousands)
+- Underemployed total (in thousands)
+- Employment ratio (ratio of Underemployed / Employed)
+
+An underemployed worker is someone who is currently employed, but who would like and is available to work additional hours. The Underemployed total and employment ratio plot clearly shows that more women face underemployment than men. This suggests presence of unequal opportunity for both genders.
+
+# Conclusion
+
+The first part of the analysis revealed that women have higher strength in part-time roles while men dominate the market for full-time roles. While the second part of the analysis did prove that there is greater unemployment in women than men, it could be due to a variety of factors and a robust conclusion cannot be drawn without analysing factors such as previous experience, years of education etc. 
+
+However, it is quite clear from the analysis that women deserve greater representation in the tech sector in Australia which is something that an organisation such as Tech Council of Australia can work towards. 
